@@ -9,11 +9,30 @@
         <canvas id="renderCanvas"></canvas>
 
         <script>
+
             //put stuff here first
         </script>
 
         <script>
             //put stuff here first
+            var canvas = document.getElementById("renderCanvas");
+            var engine = new BABYLON.Engine(canvas, true);
+            
+            var createScene = function() {
+                    //stuff
+                    
+                return scene;
+            };
+
+
+            var newScene = createScene();
+            engine.runRenderLoop(function()
+            {
+                newScene.render();
+            });
+            window.addEventListener("resize", function(){
+                engine.resize();
+            });
         </script>
     
     </body>
