@@ -352,25 +352,29 @@
                 var menuUI = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("menuUI");
                     var title = new BABYLON.GUI.TextBlock("Hicksville");
                     title.text = "HICKSVILLE";
-                    title.color = "white";
+                    title.color = "brown";
                     title.fontSize = 156;
                     title.top = "-25%";
+                    title.fontFamily = "Times New Roman";
 
                     var manager = new BABYLON.GUI.GUI3DManager(menuScene);
                     var panel = new BABYLON.GUI.StackPanel3D();
                     panel.margin = 0.02;
                     manager.addControl(panel);
 
-                    var button = new BABYLON.GUI.Button3D("orientation");
+                    var button = new BABYLON.GUI.Button3D("button");
 
                     panel.addControl(button);
-                    var text1 = new BABYLON.GUI.TextBlock();
-                    text1.text = "Play";
-                    text1.color = "white";
-                    text1.fontSize = 107;
-                    text1.fontFamily = "Arial";
-                    button.content = text1;
-                    button.onPointerUpObservable.add(function(){
+                    
+                    var text = new BABYLON.GUI.TextBlock();
+                    text.text = "Play";
+                    text.color = "white";
+                    text.fontSize = 107;
+                    text.fontFamily = "Arial";
+                    button.content = text;
+
+                    // What happens if the PLAY button is pressed
+                    button.onPointerUpObservable.add(function() {
                         engine.stopRenderLoop();
                         gamePlay = true;
                         canvas.requestPointerLock();
@@ -382,7 +386,7 @@
                         })
                     });
 
-                    /*var play = new BABYLON.GUI.Button.CreateSimpleButton("playButton", "Play");
+                    /*var play = new BABYLON.GUI.Button.CreateSimpleButton("Play Button", "play");
                     play.width = 0.2;
                     play.height = 0.1;
                     play.color = "white";
@@ -397,9 +401,9 @@
                         {
                             gameScene.render();
                         })
-                    });
-                    //menuUI.addControl(title);
-                    //menuUI.addControl(play);*/
+                    });*/
+                    menuUI.addControl(title);
+                    //menuUI.addControl(play);
 
                 return menuScene;
             }
