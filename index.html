@@ -32,7 +32,7 @@
                     gameScene.collisionsEnabled = true;
                     gameScene.enablePhysics();
 
-                    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(0, 2, -25), gameScene);
+                    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(20, 35, -25), gameScene);
                     camera.speed = 0.25;
 
 
@@ -43,7 +43,7 @@
                 // Parameters : name, position, scene
 
                 // Targets the camera to a particular position. In this case the scene origin
-                camera.setTarget(BABYLON.Vector3.Zero());
+                camera.setTarget(new BABYLON.Vector3.Zero());
 
                 // Attach the camera to the canvas
                 camera.applyGravity = true;
@@ -112,7 +112,7 @@
 
                 //Fog
                 gameScene.fogMode = BABYLON.Scene.FOGMODE_EXP;
-                gameScene.fogDensity = 0.005;
+                gameScene.fogDensity = 0.007;
                 gameScene.fogColor = new BABYLON.Color3(0.9, 0.9, 0.85);
             
                 //Geometry
@@ -120,8 +120,8 @@
                 
                 var box1 = BABYLON.MeshBuilder.CreateBox("Box1", {height: 3, width: 3, depth: 3}, gameScene);
                 
-                var baseGround = BABYLON.MeshBuilder.CreateGround("baseGround", {width: 200, height: 200, subdivsions: 4}, gameScene);
-                var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "assets/earthHeightMap.jpg", 100, 100, 100, 0, 10, gameScene, false);
+                var baseGround = BABYLON.MeshBuilder.CreateGround("baseGround", {width: 500, height: 200, subdivsions: 4}, gameScene);
+                var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "assets/12.png", 500, 500, 200, 0, 70, gameScene, false);
                 var groundMaterial = new BABYLON.StandardMaterial("ground", gameScene);
 
                 groundMaterial.diffuseTexture = new BABYLON.Texture("assets/grass.jpg", gameScene);
@@ -141,25 +141,25 @@
                 //Bounding box Geometry
 
                 var border0 = BABYLON.Mesh.CreateBox("border0", 1, gameScene);
-                border0.scaling = new BABYLON.Vector3(1, 100, 300);
+                border0.scaling = new BABYLON.Vector3(1, 200, 300);
                 border0.position.x = -100.0;
                 border0.checkCollisions = true;
                 border0.isVisible = false;
 
                 var border1 = BABYLON.Mesh.CreateBox("border1", 1, gameScene);
-                border1.scaling = new BABYLON.Vector3(1, 100, 300);
+                border1.scaling = new BABYLON.Vector3(1, 200, 300);
                 border1.position.x = 100.0;
                 border1.checkCollisions = true;
                 border1.isVisible = false;
 
                 var border2 = BABYLON.Mesh.CreateBox("border2", 1, gameScene);
-                border2.scaling = new BABYLON.Vector3(300, 100, 1);
+                border2.scaling = new BABYLON.Vector3(300, 200, 1);
                 border2.position.z = 100.0;
                 border2.checkCollisions = true;
                 border2.isVisible = false;
 
                 var border3 = BABYLON.Mesh.CreateBox("border3", 1, gameScene);
-                border3.scaling = new BABYLON.Vector3(300, 100, 1);
+                border3.scaling = new BABYLON.Vector3(300, 200, 1);
                 border3.position.z = -100.0;
                 border3.checkCollisions = true;
                 border3.isVisible = false;
@@ -233,7 +233,7 @@
                 
                 
                 //Position   
-                sphere.position = new BABYLON.Vector3(0,2.5,0);
+                sphere.position = new BABYLON.Vector3(50,2.5,0);
                 box1.position.y = 0.5;
                 box1.rotation.y = 1;
                 baseGround.position.y = -1;
