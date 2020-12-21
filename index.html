@@ -30,11 +30,11 @@
 
                     gameScene.gravity = new BABYLON.Vector3(0, -.55, 0); 
                     gameScene.collisionsEnabled = true;
-                    gameScene.enablePhysics(new BABYLON.Vector3(0,-.55,0), new BABYLON.AmmoJSPlugin());
+                    gameScene.enablePhysics(gameScene.gravity, new BABYLON.AmmoJSPlugin());
 
                     //var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(10, 35, -25), gameScene);
-                    var camera = new BABYLON.FreeCamera("UniversalCamera", new BABYLON.Vector3(0, 15, -15), gameScene);
-                    camera.speed = 0.25;
+                    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(0, 43, -5), gameScene);
+                    camera.speed = 0.2;
 
 
                 //Camera
@@ -48,7 +48,7 @@
 
                 // Attach the camera to the canvas
                 camera.applyGravity = true;
-                camera.ellipsoid = new BABYLON.Vector3(1,1.5,1);
+                camera.ellipsoid = new BABYLON.Vector3(1,1,1);
                 camera.checkCollisions = true;
                 camera.attachControl(canvas, true); 
 
@@ -60,6 +60,7 @@
                 skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
                 skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
                 skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+                skybox.infiniteDistance = true;
                 skybox.material = skyboxMaterial; 
                 
                 //Controls  WASD
@@ -113,7 +114,7 @@
 
                 //Fog
                 gameScene.fogMode = BABYLON.Scene.FOGMODE_EXP;
-                gameScene.fogDensity = 0.007;
+                gameScene.fogDensity = 0.000007;
                 gameScene.fogColor = new BABYLON.Color3(0.9, 0.9, 0.85);
             
                 //Geometry
@@ -139,7 +140,7 @@
                 //ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction:0.5, restitution: 0.5 }, gameScene);
 
                 var sphere1 = BABYLON.MeshBuilder.CreateSphere("sphere1", {diameter: 20}, gameScene);
-                sphere1.position = new BABYLON.Vector3(90,70,0);
+                sphere1.position = new BABYLON.Vector3(90,200,0);
 
                 sphere1.physicsImpostor = new BABYLON.PhysicsImpostor(sphere1, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1.1 }, gameScene);
 
@@ -149,20 +150,19 @@
                 baseGround.material = grassMaterial;
 
                 // import village
-                var env = BABYLON.SceneLoader.ImportMesh("","./4522_open3dmodel/Medieval/", "Medieval_City.obj", gameScene, function(scene) {
-                    var envGround = BABYLON.MeshBuilder.CreateGround('envground', {height:-.40, width:800, subdivisions: 2}, scene);
-                    //envGround.scaling = new Vector3(1,.02,1);
-
-                    env.collisionsEnabled = true;
-                    envGround.collisionsEnabled = true;
-
-                    envGround.checkCollisions = true;
-                    env.checkCollisions = true;
-
-                    //let env = env.meshes[0];
-                    //let allMeshes = env.getChildMeshes();
-                    env.name = "env"
+                var env = BABYLON.SceneLoader.ImportMesh("","./4522_open3dmodel/Medieval/", "scene.glb", gameScene, function(object) {
+                //var env = BABYLON.SceneLoader.ImportMesh("", "./building/", "building.babylon", gameScene, function(scene) {    
+                    object.forEach((mesh,index) => {
+                        mesh.checkCollisions = true;
+                    });
+                    //env.collisionsEnabled = true;
+                    //env.checkCollisions = true;
+                    
                 });
+
+                // env.checkCollisions = true;
+
+                var envGround = BABYLON.MeshBuilder.CreateGround('envground', {height:0, width:800, subdivisions: 2}, scene);
                 
                 //env.physicsImpostor = new BABYLON.PhysicsImpostor(env, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction:0.5, restitution: 0.5 }, gameScene);
 
@@ -170,29 +170,29 @@
 
                 //Bounding box Geometry
 
-                var border0 = BABYLON.Mesh.CreateBox("border0", 1, gameScene);
-                border0.scaling = new BABYLON.Vector3(1, 200, 300);
+                /*var border0 = BABYLON.Mesh.CreateBox("border0", 1, gameScene);
+                border0.scaling = new BABYLON.Vector3(1, 200, 500);
                 border0.position.x = -100.0;
                 border0.checkCollisions = true;
                 border0.isVisible = false;
 
                 var border1 = BABYLON.Mesh.CreateBox("border1", 1, gameScene);
-                border1.scaling = new BABYLON.Vector3(1, 200, 300);
+                border1.scaling = new BABYLON.Vector3(1, 200, 500);
                 border1.position.x = 100.0;
                 border1.checkCollisions = true;
                 border1.isVisible = false;
 
                 var border2 = BABYLON.Mesh.CreateBox("border2", 1, gameScene);
-                border2.scaling = new BABYLON.Vector3(300, 200, 1);
+                border2.scaling = new BABYLON.Vector3(500, 200, 1);
                 border2.position.z = 100.0;
                 border2.checkCollisions = true;
                 border2.isVisible = false;
 
                 var border3 = BABYLON.Mesh.CreateBox("border3", 1, gameScene);
-                border3.scaling = new BABYLON.Vector3(300, 200, 1);
+                border3.scaling = new BABYLON.Vector3(500, 200, 1);
                 border3.position.z = -100.0;
                 border3.checkCollisions = true;
-                border3.isVisible = false;
+                border3.isVisible = true;*/
 
                 //Weapon Geometry
 
@@ -263,8 +263,8 @@
                 
                 
                 //Position   
-                sphere.position = new BABYLON.Vector3(50,2.5,0);
-                box1.position.y = 0.5;
+                sphere.position = new BABYLON.Vector3(50,50,0);
+                box1.position.y = 60.5;
                 box1.rotation.y = 1;
                 baseGround.position.y = -1;
                 
@@ -351,13 +351,14 @@
 
                 baseGround.checkCollisions = true;
                 box1.checkCollisions = true;
-                env.checkCollisions = true;
+                sphere1.checkCollisions = true;
+                //env.checkCollisions = true;
                 //ground.checkCollisions = true;
                 
                 
                 //Jump
                 function jump(){
-                camera.cameraDirection.y = 2.5;
+                    camera.cameraDirection.y = 1.0;
                 }
 
                 document.body.onkeyup = function(e){
