@@ -11,3 +11,10 @@ html, body {
     height: 100%;
     touch-action: none;
 }
+
+#customLoadingScreenDiv {
+    background-color: #33334c;
+    color: white;
+    font-size:50px;
+    text-align:center;
+}

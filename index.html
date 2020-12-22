@@ -29,6 +29,8 @@
                     var gameScene = new BABYLON.Scene(engine);
                     var gamePlay = true;
 
+                    engine.displayLoadingUI();
+
                     gameScene.gravity = new BABYLON.Vector3(0, -.55, 0); 
                     gameScene.collisionsEnabled = true;
                     gameScene.enablePhysics(gameScene.gravity, new BABYLON.AmmoJSPlugin());
@@ -67,6 +69,7 @@
 
                 // IN-GAME UI
                 var gameUI = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("gameUI");
+        
 
                 // CONTROLS
 
@@ -171,6 +174,20 @@
                     console.log("too slow");
                 });
 
+                // import village
+                var env = BABYLON.SceneLoader.ImportMesh("","./4522_open3dmodel/Medieval/", "scene.glb", gameScene, function(object) {
+                    //var env = BABYLON.SceneLoader.ImportMesh("", "./building/", "building.babylon", gameScene, function(scene) {    
+                        object.forEach((mesh,index) => {
+                            mesh.checkCollisions = true;
+                            //mesh.receiveShadows = true;
+                            
+                        });
+                        engine.hideLoadingUI();
+                        //env.collisionsEnabled = true;
+                        //env.checkCollisions = true;
+                        
+                    });
+
                 //Fog
                 // set option to change fog density in-game
                 gameScene.fogMode = BABYLON.Scene.FOGMODE_EXP;
@@ -208,18 +225,6 @@
                 grassMaterial.diffuseTexture = new BABYLON.Texture("./assets/grass.jpg", gameScene);
                 grassMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
                 baseGround.material = grassMaterial;
-
-                // import village
-                var env = BABYLON.SceneLoader.ImportMesh("","./4522_open3dmodel/Medieval/", "scene.glb", gameScene, function(object) {
-                //var env = BABYLON.SceneLoader.ImportMesh("", "./building/", "building.babylon", gameScene, function(scene) {    
-                    object.forEach((mesh,index) => {
-                        mesh.checkCollisions = true;
-                        //mesh.receiveShadows = true;
-                    });
-                    //env.collisionsEnabled = true;
-                    //env.checkCollisions = true;
-                    
-                });
 
 
                 // env.checkCollisions = true;
@@ -425,6 +430,7 @@
 
             };
 
+
             var createMenu = function() {
                 var menuScene = new BABYLON.Scene(engine);
                 var gamePlay = false;
@@ -440,11 +446,6 @@
                     title.fontSize = 156;
                     title.top = "-25%";
                     title.fontFamily = "Times New Roman";
-
-                    var manager = new BABYLON.GUI.GUI3DManager(menuScene);
-                    var panel = new BABYLON.GUI.StackPanel3D();
-                    panel.margin = 0.02;
-                    manager.addControl(panel);
 
                     var play = BABYLON.GUI.Button.CreateSimpleButton("Play Button", "Play");
                     play.width = 0.2;
@@ -476,9 +477,36 @@
                     });
                     menuUI.addControl(title);
                     menuUI.addControl(play);
+                    
 
                 return menuScene;
             }
+
+            // Loading screen
+            BABYLON.DefaultLoadingScreen.prototype.displayLoadingUI = function () {
+                if (document.getElementById("customLoadingScreenDiv")) {
+                    document.getElementById("customLoadingScreenDiv").style.display = "initial";
+                    // Do not add a loading screen if there is already one
+                    return;
+                }
+                
+                this._loadingDiv = document.createElement("div");
+                this._loadingDiv.id = "customLoadingScreenDiv";
+                this._loadingDiv.innerHTML = "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Loadingsome.gif/600px-Loadingsome.gif' />";
+                var customLoadingScreenCss = document.createElement('style');
+                customLoadingScreenCss.type = 'text/css';
+
+                document.getElementsByTagName('head')[0].appendChild(customLoadingScreenCss);
+                this._resizeLoadingUI();
+                window.addEventListener("resize", this._resizeLoadingUI);
+                document.body.appendChild(this._loadingDiv);
+            };
+
+            BABYLON.DefaultLoadingScreen.prototype.hideLoadingUI = function() {
+                document.getElementById("customLoadingScreenDiv").style.display = "none";
+                console.log("Scene is now loaded");
+            }
+
 
             //This is executed first upon launching the whole thing
             var scene = createMenu();
