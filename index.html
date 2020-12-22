@@ -27,6 +27,7 @@
             
             var createScene = function() {
                     var gameScene = new BABYLON.Scene(engine);
+                    var gamePlay = true;
 
                     gameScene.gravity = new BABYLON.Vector3(0, -.55, 0); 
                     gameScene.collisionsEnabled = true;
@@ -63,13 +64,18 @@
                 skybox.infiniteDistance = true;
                 skybox.material = skyboxMaterial; 
                 
+
+                // IN-GAME UI
+                var gameUI = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("gameUI");
+
+                // CONTROLS
+
                 //Controls  WASD
                 camera.keysUp.push(87); 
                 camera.keysDown.push(83);            
                 camera.keysRight.push(68);
                 camera.keysLeft.push(65);
                 
-
                 //Controls...Mouse
                 //We start without being locked.
                 var isLocked = false;
@@ -86,7 +92,9 @@
                     }
                     
                     //continue with shooting requests or whatever :P
-                    if (evt === 0) {castRay()}; //(left mouse click)
+                    /*if (evt === 0) {
+                        console.log("hi");
+                    };*/ //(left mouse click)
                     //evt === 1 (mouse wheel click (not scrolling))
                     //evt === 2 (right mouse click)
                 };
@@ -105,14 +113,66 @@
                         isLocked = true;
                     }
                 };
-                
+
+                // Pause Text
+                var pause_text = new BABYLON.GUI.TextBlock('Pause');
+                pause_text.fontSize = 100;
+                pause_text.color = "white";
+                pause_text.text = "Paused";
+                gameUI.addControl(pause_text);
+                pause_text.isVisible = false;
+
+                // Pause Function
+                /*window.addEventListener("keydown", function (evt) {
+                    // space key down
+                    if (evt.keyCode === 80 && gamePlay) {
+                        if(!pause) {
+                            pause_text.isVisible = true;
+                            pause = true;
+                            //engine.stopRenderLoop();
+                        }
+                        else {
+                            pause_text.isVisible = false;
+                            pause = false;
+                            gameScene.animationsEnabled = false;
+                            engine.runRenderLoop(function(){
+                                gameScene.render();
+                            });
+                        }
+                    }
+                });*/
+                    
+                //Jump
+                function jump(){
+                    camera.cameraDirection.y = 1.0;
+                }
+
+                document.body.onkeyup = function(e){
+                if(e.keyCode == 32){
+                    //your code
+                    console.log("jump");
+                    setTimeout(jump(), 100000); 
+
+                    }
+                }
+
                 // Attach events to the document
                 document.addEventListener("pointerlockchange", pointerlockchange, false);
                 document.addEventListener("mspointerlockchange", pointerlockchange, false);
                 document.addEventListener("mozpointerlockchange", pointerlockchange, false);
                 document.addEventListener("webkitpointerlockchange", pointerlockchange, false);
 
+                BABYLON.SceneOptimizer.OptimizeAsync(gameScene, BABYLON.SceneOptimizerOptions.ModerateDegradationAllowed(),
+                function() {
+                // On success
+                    console.log("hello");
+                }, function() {
+                // FPS target not reached
+                    console.log("too slow");
+                });
+
                 //Fog
+                // set option to change fog density in-game
                 gameScene.fogMode = BABYLON.Scene.FOGMODE_EXP;
                 gameScene.fogDensity = 0.000007;
                 gameScene.fogColor = new BABYLON.Color3(0.9, 0.9, 0.85);
@@ -154,11 +214,13 @@
                 //var env = BABYLON.SceneLoader.ImportMesh("", "./building/", "building.babylon", gameScene, function(scene) {    
                     object.forEach((mesh,index) => {
                         mesh.checkCollisions = true;
+                        //mesh.receiveShadows = true;
                     });
                     //env.collisionsEnabled = true;
                     //env.checkCollisions = true;
                     
                 });
+
 
                 // env.checkCollisions = true;
 
@@ -196,7 +258,7 @@
 
                 //Weapon Geometry
 
-                let rlMesh = BABYLON.MeshBuilder.CreateCylinder("rl", {diameterTop: 0.8, diameterBottom: 0.9, height: 3, tessellation: 64}, scene);
+                /*let rlMesh = BABYLON.MeshBuilder.CreateCylinder("rl", {diameterTop: 0.8, diameterBottom: 0.9, height: 3, tessellation: 64}, gameScene);
                 rlMesh.renderingGroupId = 1;
                 rlMesh.material = new BABYLON.StandardMaterial("rlMat", gameScene);
                 rlMesh.material.diffuseColor = new BABYLON.Color3(0, 0, 0);
@@ -210,7 +272,7 @@
                     var m = mesh.getWorldMatrix();
                     var v = BABYLON.Vector3.TransformCoordinates(vector, m);
                     return v;		 
-                }
+                }*/
 
             /*function castRay(){       
                     var origin = rlMesh.position;
@@ -249,7 +311,9 @@
                 var shadowGenerator = new BABYLON.ShadowGenerator(1024, light2);
                 shadowGenerator.getShadowMap().renderList.push(box1);
                 shadowGenerator.getShadowMap().renderList.push(sphere);
+                //shadowGenerator.getShadowMap().renderList.push(env);
                 baseGround.receiveShadows = true;
+                //env.receiveShadows = true;
 
 
                 //Color
@@ -355,20 +419,7 @@
                 //env.checkCollisions = true;
                 //ground.checkCollisions = true;
                 
-                
-                //Jump
-                function jump(){
-                    camera.cameraDirection.y = 1.0;
-                }
-
-                document.body.onkeyup = function(e){
-                if(e.keyCode == 32){
-                    //your code
-                    console.log("jump");
-                    setTimeout(jump(), 10000); 
-
-                }
-                }
+            
                 
                 return gameScene;
 
@@ -395,19 +446,24 @@
                     panel.margin = 0.02;
                     manager.addControl(panel);
 
-                    var button = new BABYLON.GUI.Button3D("button");
+                    var play = BABYLON.GUI.Button.CreateSimpleButton("Play Button", "Play");
+                    play.width = 0.2;
+                    play.height = 0.1;
+                    play.color = "white";
+                    play.fontSize = 36;
+                    play.fontFamily = "Verdana";
+                    play.background = "transparent";
+                    play.cornerRadius = 15;
 
-                    panel.addControl(button);
-                    
-                    var text = new BABYLON.GUI.TextBlock();
-                    text.text = "Play";
-                    text.color = "white";
-                    text.fontSize = 107;
-                    text.fontFamily = "Arial";
-                    button.content = text;
+                    play.onPointerEnterObservable.add(function () {
+                        play.background = "brown";
+                    });
 
-                    // What happens if the PLAY button is pressed
-                    button.onPointerUpObservable.add(function() {
+                    play.onPointerOutObservable.add(function () {
+                        play.background = "transparent";
+                    });
+
+                    play.onPointerUpObservable.add(function(){
                         engine.stopRenderLoop();
                         gamePlay = true;
                         canvas.requestPointerLock();
@@ -418,37 +474,35 @@
                             game.render();
                         })
                     });
-
-                    /*var play = new BABYLON.GUI.Button.CreateSimpleButton("Play Button", "play");
-                    play.width = 0.2;
-                    play.height = 0.1;
-                    play.color = "white";
-                    play.fontSize = 36;
-                    play.fontFamily = "Verdana";
-                    play.background = "green";
-                    play.onPointerUpObservable.add(function(){
-                        engine.stopRenderLoop();
-                        gamePlay = true;
-                        canvas.requestPointerLock();
-                        engine.runRenderLoop(function()
-                        {
-                            gameScene.render();
-                        })
-                    });*/
                     menuUI.addControl(title);
-                    //menuUI.addControl(play);
+                    menuUI.addControl(play);
 
                 return menuScene;
             }
 
             //This is executed first upon launching the whole thing
             var scene = createMenu();
+            var pause = false;
+
+            // register before rendering the pause feature        
+            scene.registerBeforeRender(function() {
+                if(pause) {
+                    console.log("pausing..");
+                    //engine.stopRenderLoop();
+                    //scene.animationsEnabled = false;
+                    //animationBox.pause();
+                    //particleSystem.pause();
+                }
+            
+                return scene;
+            
+            });
 
             engine.runRenderLoop(function() {
                 scene.render();
             })
             
-            window.addEventListener("resize", function(){
+            window.addEventListener("resize", function() {
                 engine.resize();
             });
         </script>
