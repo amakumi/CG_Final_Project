@@ -7,6 +7,7 @@
         <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
         <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
         <script src="https://cdn.babylonjs.com/ammo.js"></script>
+        <script src="https://cdn.babylonjs.com/cannon.js"></script>
         <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
         <link rel="stylesheet" href="style.css">    
     </head>
@@ -36,9 +37,11 @@
                     gameScene.enablePhysics(gameScene.gravity, new BABYLON.AmmoJSPlugin());
 
                     //var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(10, 35, -25), gameScene);
-                    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(0, 43, -5), gameScene);
+                    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(50, 42, 0), gameScene);
                     camera.speed = 0.2;
-
+                    camera.parent = env;
+                    camera.rotation.y = 35.5;
+                    // new BABYLON.Vector3(10, 43, -5);
 
                 //Camera
                 //var camera = new BABYLON.ArcRotateCamera("Camera", -Math.PI / 2, Math.PI / 2, 12, BABYLON.Vector3.Zero(), scene);
@@ -47,7 +50,7 @@
                 // Parameters : name, position, scene
 
                 // Targets the camera to a particular position. In this case the scene origin
-                camera.setTarget(new BABYLON.Vector3.Zero());
+                //camera.setTarget(new BABYLON.Vector3.Zero());
 
                 // Attach the camera to the canvas
                 camera.applyGravity = true;
@@ -179,14 +182,29 @@
                     //var env = BABYLON.SceneLoader.ImportMesh("", "./building/", "building.babylon", gameScene, function(scene) {    
                         object.forEach((mesh,index) => {
                             mesh.checkCollisions = true;
-                            //mesh.receiveShadows = true;
+                            //mesh.enableCollisions = true;
                             
                         });
                         engine.hideLoadingUI();
                         //env.collisionsEnabled = true;
                         //env.checkCollisions = true;
-                        
+                        //env.physicsImpostor = new BABYLON.PhysicsImpostor(env, BABYLON.PhysicsImpostor.PlaneImpostor, {mass: 0, restitution:0.7});
+                        for (var i = 1; i < gameScene.env.length; i++) {
+                        if (gameScene.env[i].checkCollisions && gameScene.env[i].isVisible === false) {
+                            gameScene.meshes[i].setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, 
+                                                            friction: 0.5, restitution: 0.7 });
+                            meshesColliderList.push(gameScene.env[i]);
+                        }
+                    }
                     });
+                
+                var meshesColliderList = [];    
+                
+                //env.physicsImpostor = new BABYLON.PhysicsImpostor(env, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0, restitution:0.7}, gameScene);
+                    
+                var testsphere = BABYLON.MeshBuilder.CreateSphere("testball", {diameter: 20}, gameScene);
+                testsphere.position = new BABYLON.Vector3(60,200,0);
+                testsphere.physicsImpostor = new BABYLON.PhysicsImpostor(testsphere, BABYLON.PhysicsImpostor.MeshImpostor, { mass: 1.1 }, gameScene);
 
                 //Fog
                 // set option to change fog density in-game
@@ -196,6 +214,7 @@
             
                 //Geometry
                 var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {}, gameScene);
+                //sphere.setPhysicsState({impostor: BABYLON.PhysicsEngine.BoxImpostor, mass:1, friction:0.5, restitution:0.7});
                 
                 var box1 = BABYLON.MeshBuilder.CreateBox("Box1", {height: 3, width: 3, depth: 3}, gameScene);
                 
@@ -213,13 +232,13 @@
 
                 // Physics impostor
                 //ground.checkCollisions = true;
-                baseGround.physicsImpostor = new BABYLON.PhysicsImpostor(baseGround, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction:0.5, restitution: 0.5 }, gameScene);
+                baseGround.physicsImpostor = new BABYLON.PhysicsImpostor(baseGround, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction:0.5, restitution: 0.7 }, gameScene);
                 //ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction:0.5, restitution: 0.5 }, gameScene);
 
                 var sphere1 = BABYLON.MeshBuilder.CreateSphere("sphere1", {diameter: 20}, gameScene);
                 sphere1.position = new BABYLON.Vector3(90,200,0);
 
-                sphere1.physicsImpostor = new BABYLON.PhysicsImpostor(sphere1, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1.1 }, gameScene);
+                sphere1.physicsImpostor = new BABYLON.PhysicsImpostor(sphere1, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 1.1 }, gameScene);
 
                 var grassMaterial = new BABYLON.StandardMaterial("grasses", gameScene);
                 grassMaterial.diffuseTexture = new BABYLON.Texture("./assets/grass.jpg", gameScene);
@@ -335,9 +354,11 @@
                 sphere.position = new BABYLON.Vector3(50,50,0);
                 box1.position.y = 60.5;
                 box1.rotation.y = 1;
-                baseGround.position.y = -1;
+                baseGround.position.y = 2;
                 
                 // Create a particle system
+                // set particle system to snow or similar 
+                
                 var particleSystem = new BABYLON.ParticleSystem("particles", 2000, gameScene);
 
                 //Texture of each particle
@@ -347,7 +368,7 @@
                 // Where the particles come from
                 particleSystem.emitter = box1; // the starting object, the emitter
                 particleSystem.minEmitBox = new BABYLON.Vector3(0, 2, 0); // Starting all from
-                particleSystem.maxEmitBox = new BABYLON.Vector3(1, 2.5, 70); // To...
+                particleSystem.maxEmitBox = new BABYLON.Vector3(500, 2, 70); // To...
 
                 // Colors of all particles
                 particleSystem.color1 = new BABYLON.Color4(0.7, 5.8, 1.0, 1.0);
@@ -372,8 +393,12 @@
                 particleSystem.gravity = new BABYLON.Vector3(0, -9.81, 0);
 
                 // Direction of each particle after it has been emitted
-                particleSystem.direction1 = new BABYLON.Vector3(0, 0, 0);
+                //particleSystem.direction1 = new BABYLON.Vector3(0, 0, 0);
+                //particleSystem.direction2 = new BABYLON.Vector3(-100, 10, 100);
+                particleSystem.direction1 = new BABYLON.Vector3(0, -1, 0);
                 particleSystem.direction2 = new BABYLON.Vector3(-100, 10, 100);
+                particleSystem.direction3 = new BABYLON.Vector3(0, -5, 10);
+                particleSystem.direction4 = new BABYLON.Vector3(10, -10, 10);
 
                 // Angular speed, in radians
                 particleSystem.minAngularSpeed = 0;
@@ -421,10 +446,10 @@
                 baseGround.checkCollisions = true;
                 box1.checkCollisions = true;
                 sphere1.checkCollisions = true;
+                //testsphere.checkCollisions = true;
                 //env.checkCollisions = true;
                 //ground.checkCollisions = true;
                 
-            
                 
                 return gameScene;
 
@@ -435,8 +460,7 @@
                 var menuScene = new BABYLON.Scene(engine);
                 var gamePlay = false;
                     
-                var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(0, 2, -25), menuScene);
-                camera.speed = 0.25;
+                var camera = new BABYLON.FreeCamera("menuCamera", new BABYLON.Vector3(0, 0, 0), menuScene);
 
                 //UI
                 var menuUI = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("menuUI");
