@@ -112,12 +112,13 @@
                     settings.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
                     settings.width = 0.08;
                     settings.height = 0.03;
-                    settings.top = "5%";
+                    settings.top = "0%";
                     settings.color = "white";
                     settings.fontSize = 16;
                     settings.fontFamily = "Verdana";
                     settings.background = "transparent";
                     settings.cornerRadius = 15;
+                    var settingsOpened = false;
 
                 settings.onPointerEnterObservable.add(function () {
                     settings.background = "brown";
@@ -126,12 +127,22 @@
                 settings.onPointerOutObservable.add(function () {
                     settings.background = "transparent";
                 });
-
+                // Opens the settings bar
                 settings.onPointerUpObservable.add(function() {
-                    gameUI.addControl(quit);
-                    gameUI.addControl(fog);
-                    fog.isVisible = true;
-                    quit.isVisible = true;
+                    if (settingsOpened == false) {
+                        settings.textBlock.text = "Back";
+                        settingsOpened = true;
+                        gameUI.addControl(quit);
+                        gameUI.addControl(fog);
+                        fog.isVisible = true;
+                        quit.isVisible = true;
+                    }
+                    else {
+                        settings.textBlock.text = "Settings";
+                        settingsOpened = false;
+                        fog.isVisible = false;
+                        quit.isVisible = false;
+                    }
                 });
 
                 var quit = BABYLON.GUI.Button.CreateSimpleButton("Quit Button", "Quit");
@@ -139,7 +150,7 @@
                     quit.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
                     quit.width = 0.08;
                     quit.height = 0.03;
-                    quit.top = "15%";
+                    quit.top = "10%";
                     quit.color = "white";
                     quit.fontSize = 16;
                     quit.fontFamily = "Verdana";
@@ -166,12 +177,12 @@
                         })
                 });
 
-                var fog = BABYLON.GUI.Button.CreateSimpleButton("Fog Button", "Fog");
+                var fog = BABYLON.GUI.Button.CreateSimpleButton("Fog Button", "Fog Off");
                     fog.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
                     fog.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
                     fog.width = 0.08;
                     fog.height = 0.03;
-                    fog.top = "10%";
+                    fog.top = "5%";
                     fog.color = "white";
                     fog.fontSize = 16;
                     fog.fontFamily = "Verdana";
@@ -187,21 +198,18 @@
                 });
 
                 fog.onPointerUpObservable.add(function() {
-                        //engine.stopRenderLoop();
-                        //gamePlay = false;
-                        //canvas.requestPointerLock();
-                        //toggleFog().engine.render();
-                        quit.isVisible = false;
-                        if (fogEnabled == false) {
-                            var fogToggle = toggleFog();
-                            engine.runRenderLoop(function()
-                            {
-                                fogToggle.render();
-                            });
-                        }
-                        else {
-                            fogOff();
-                        }
+                    if (fogEnabled == false) {
+                        var fogToggle = toggleFog();
+                        settings.textBlock.text = "Fog On";
+                        engine.runRenderLoop(function()
+                        {
+                            fogToggle.render();
+                        });
+                    }
+                    else {
+                        settings.textBlock.text = "Fog Off";
+                        fogOff();
+                    }
                         
                 });
 
