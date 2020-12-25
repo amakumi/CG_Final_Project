@@ -42,7 +42,7 @@
                     
 
                     //var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(10, 35, -25), gameScene);
-                    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(50, 12, 0), gameScene);
+                    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(50, 42, 0), gameScene);
                     camera.speed = 0.2;
                     //camera.parent = env;
                     camera.rotation.y = 35.5;
@@ -263,7 +263,7 @@
                         }
                     ]*/
                 });
-                env.physicsImpostor = new BABYLON.PhysicsImpostor(env, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0, restitution:0.7}, gameScene);
+                //env.physicsImpostor = new BABYLON.PhysicsImpostor(env, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0, restitution:0.7}, gameScene);
                         
                 /*var assetsManager = new BABYLON.AssetsManager(gameScene);
                 var env = assetsManager.addMeshTask("village","","./4522_open3dmodel/Medieval/", "scene.glb");
