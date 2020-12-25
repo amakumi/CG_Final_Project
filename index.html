@@ -8,7 +8,9 @@
         <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
         <script src="https://cdn.babylonjs.com/ammo.js"></script>
         <script src="https://cdn.babylonjs.com/cannon.js"></script>
+        <script src="https://cdn.babylonjs.com/Oimo.js"></script>
         <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+
         <link rel="stylesheet" href="style.css">    
     </head>
     <body>
@@ -31,13 +33,16 @@
                     var gamePlay = true;
 
                     engine.displayLoadingUI();
+                    gameScene.enablePhysics();
 
-                    gameScene.gravity = new BABYLON.Vector3(0, -.55, 0); 
+                    gameScene.gravity = new BABYLON.Vector3(0, -.55, 0);
+                    gameScene.getPhysicsEngine().setGravity(gameScene.gravity); 
                     gameScene.collisionsEnabled = true;
-                    gameScene.enablePhysics(gameScene.gravity, new BABYLON.AmmoJSPlugin());
+                    //gameScene.enablePhysics(gameScene.gravity, new BABYLON.CannonJSPlugin());
+                    
 
                     //var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(10, 35, -25), gameScene);
-                    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(50, 42, 0), gameScene);
+                    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(50, 12, 0), gameScene);
                     camera.speed = 0.2;
                     //camera.parent = env;
                     camera.rotation.y = 35.5;
@@ -135,10 +140,10 @@
                 // CONTROLS
 
                 //Controls  WASD
-                camera.keysUp.push(87); 
-                camera.keysDown.push(83);            
-                camera.keysRight.push(68);
-                camera.keysLeft.push(65);
+                camera.keysUp = [87]; // W
+                camera.keysDown = [83]; // S
+                camera.keysLeft = [65]; // A
+                camera.keysRight = [68]; // D
                 
                 //Controls...Mouse
                 //We start without being locked.
@@ -239,16 +244,16 @@
                 var env = BABYLON.SceneLoader.ImportMesh("","./4522_open3dmodel/Medieval/", "scene.glb", gameScene, function(object) {
                     //var env = BABYLON.SceneLoader.ImportMesh("", "./building/", "building.babylon", gameScene, function(scene) {    
                         object.forEach((mesh,index) => {
-                            mesh.checkCollisions = true;
                             //mesh.enableCollisions = true;
                             //mesh.setPhysicsState(BABYLON.PhysicsEngine.MeshImpostor, {mass:0, restitution:0.7});
                             mesh.receiveShadows = true;
-                            
+                            //mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0, restitution:0.7});
+                            mesh.checkCollisions = true;
                         });
                         engine.hideLoadingUI();
                         //env.collisionsEnabled = true;
                         //env.checkCollisions = true;
-                        //env.physicsImpostor = new BABYLON.PhysicsImpostor(env, BABYLON.PhysicsImpostor.PlaneImpostor, {mass: 0, restitution:0.7});
+                        //env.physicsImpostor = new BABYLON.PhysicsImpostor(env, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0, restitution:0.7});
                         
                         /*for (var i = 1; i < gameScene.env.length; i++) {
                         if (gameScene.env[i].checkCollisions && gameScene.env[i].isVisible === false) {
@@ -258,7 +263,8 @@
                         }
                     ]*/
                 });
-
+                env.physicsImpostor = new BABYLON.PhysicsImpostor(env, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0, restitution:0.7}, gameScene);
+                        
                 /*var assetsManager = new BABYLON.AssetsManager(gameScene);
                 var env = assetsManager.addMeshTask("village","","./4522_open3dmodel/Medieval/", "scene.glb");
                 
@@ -281,7 +287,7 @@
                 var testsphere = BABYLON.MeshBuilder.CreateSphere("testball", {diameter: 10}, gameScene);
                 //testsphere.position = new BABYLON.Vector3(60,200,0);
                 testsphere.position.y = 200;
-                testsphere.physicsImpostor = new BABYLON.PhysicsImpostor(testsphere, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 2.1 }, gameScene);
+                testsphere.physicsImpostor = new BABYLON.PhysicsImpostor(testsphere, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 12.1 }, gameScene);
 
 
                 var testbox = BABYLON.MeshBuilder.CreateBox("testbox", {diameter: 20}, gameScene);
@@ -293,7 +299,7 @@
                 var sphere1 = BABYLON.MeshBuilder.CreateSphere("sphere1", {diameter: 20}, gameScene);
                 sphere1.position = new BABYLON.Vector3(90,200,0);
 
-                sphere1.physicsImpostor = new BABYLON.PhysicsImpostor(sphere1, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 3.1 }, gameScene);
+                sphere1.physicsImpostor = new BABYLON.PhysicsImpostor(sphere1, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 13.1 }, gameScene);
 
 
                 //Fog
@@ -309,6 +315,12 @@
                 var box1 = BABYLON.MeshBuilder.CreateBox("Box1", {height: 3, width: 3, depth: 3}, gameScene);
                 
                 var baseGround = BABYLON.MeshBuilder.CreateGround("baseGround", {width: 500, height: 500, subdivsions: 4}, gameScene);
+                // Physics impostor
+                //ground.checkCollisions = true;
+                baseGround.physicsImpostor = new BABYLON.PhysicsImpostor(baseGround, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction:0.5, restitution: 2.7 }, gameScene);
+                //ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction:0.5, restitution: 0.5 }, gameScene);
+
+                
                 //var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "assets/12.png", 500, 500, 200, 0, 70, gameScene, false);
                 var groundMaterial = new BABYLON.StandardMaterial("groundMat", gameScene);
 
@@ -319,11 +331,6 @@
                 //ground.position.y = -1.5;
                 //ground.position.x = -50;
                 //ground.material = groundMaterial;
-
-                // Physics impostor
-                //ground.checkCollisions = true;
-                baseGround.physicsImpostor = new BABYLON.PhysicsImpostor(baseGround, BABYLON.PhysicsImpostor.MeshImpostor, { mass: 0, friction:0.5, restitution: 0.7 }, gameScene);
-                //ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction:0.5, restitution: 0.5 }, gameScene);
 
                 
                 var grassMaterial = new BABYLON.StandardMaterial("grasses", gameScene);
@@ -530,7 +537,7 @@
                 gameScene.beginAnimation(box1, 0, 100, true);
 
                 baseGround.checkCollisions = true;
-                box1.checkCollisions = true;
+                //box1.checkCollisions = true;
                 sphere1.checkCollisions = true;
                 testsphere.checkCollisions = true;
                 //env.checkCollisions = true;
