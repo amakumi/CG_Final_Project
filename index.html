@@ -35,19 +35,14 @@
                     engine.displayLoadingUI();
                     gameScene.enablePhysics();
 
+                    // debug UI
+                    gameScene.debugLayer.show();
+
                     gameScene.gravity = new BABYLON.Vector3(0, -.55, 0);
                     gameScene.getPhysicsEngine().setGravity(gameScene.gravity); 
                     gameScene.collisionsEnabled = true;
                     //gameScene.enablePhysics(gameScene.gravity, new BABYLON.CannonJSPlugin());
                     
-
-                    //var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(10, 35, -25), gameScene);
-                    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(50, 42, 0), gameScene);
-                    camera.speed = 0.2;
-                    //camera.parent = env;
-                    camera.rotation.y = 35.5;
-                    // new BABYLON.Vector3(10, 43, -5);
-
                 //Camera
                 //var camera = new BABYLON.ArcRotateCamera("Camera", -Math.PI / 2, Math.PI / 2, 12, BABYLON.Vector3.Zero(), scene);
                 //camera.attachControl(canvas, true);
@@ -57,11 +52,42 @@
                 // Targets the camera to a particular position. In this case the scene origin
                 //camera.setTarget(new BABYLON.Vector3.Zero());
 
+                var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(50, 42, 0), gameScene);
+                    camera.speed = 0.2;
+                    camera.parent = env;
+                    camera.rotation.y = 35.5;
+
                 // Attach the camera to the canvas
                 camera.applyGravity = true;
                 camera.ellipsoid = new BABYLON.Vector3(1,1,1);
                 camera.checkCollisions = true;
                 camera.attachControl(canvas, true); 
+
+                // CONTROLS
+
+                //Controls  WASD
+                camera.keysUp = [87]; // W
+                camera.keysDown = [83]; // S
+                camera.keysLeft = [65]; // A
+                camera.keysRight = [68]; // D
+
+                //Jump
+                function jump(){
+                    camera.cameraDirection.y = 1.0;
+                    //setTimeout(10);
+                }
+
+                let justJumped = false;
+                document.body.onkeyup = function(e){
+                    if(e.keyCode == 32 && !justJumped) {
+                        //your code
+                        justJumped = true;
+                        setTimeout(() => justJumped = false, 1000);
+                        console.log("jump");
+                        jump();
+                        //setTimeout(jump, 1000);
+                    }
+                }
 
                 // Skybox
                 var skybox = BABYLON.Mesh.CreateBox("skyBox", 300.0, gameScene);
@@ -74,7 +100,6 @@
                 skybox.infiniteDistance = true;
                 skybox.material = skyboxMaterial; 
                 
-
                 // IN-GAME UI
                 var gameUI = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("gameUI");
                 gameUI.rootContainer.top = "2%";
@@ -102,12 +127,19 @@
                     settings.background = "transparent";
                 });
 
+                settings.onPointerUpObservable.add(function() {
+                    gameUI.addControl(quit);
+                    gameUI.addControl(fog);
+                    fog.isVisible = true;
+                    quit.isVisible = true;
+                });
+
                 var quit = BABYLON.GUI.Button.CreateSimpleButton("Quit Button", "Quit");
                     quit.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
                     quit.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
                     quit.width = 0.08;
                     quit.height = 0.03;
-                    settings.top = "10%";
+                    quit.top = "15%";
                     quit.color = "white";
                     quit.fontSize = 16;
                     quit.fontFamily = "Verdana";
@@ -134,16 +166,68 @@
                         })
                 });
 
-                //gameUI.addControl(settings);
-                gameUI.addControl(quit);
+                var fog = BABYLON.GUI.Button.CreateSimpleButton("Fog Button", "Fog");
+                    fog.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+                    fog.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+                    fog.width = 0.08;
+                    fog.height = 0.03;
+                    fog.top = "10%";
+                    fog.color = "white";
+                    fog.fontSize = 16;
+                    fog.fontFamily = "Verdana";
+                    fog.background = "transparent";
+                    fog.cornerRadius = 15;
 
-                // CONTROLS
+                    fog.onPointerEnterObservable.add(function () {
+                    fog.background = "brown";
+                });
 
-                //Controls  WASD
-                camera.keysUp = [87]; // W
-                camera.keysDown = [83]; // S
-                camera.keysLeft = [65]; // A
-                camera.keysRight = [68]; // D
+                fog.onPointerOutObservable.add(function () {
+                    fog.background = "transparent";
+                });
+
+                fog.onPointerUpObservable.add(function() {
+                        //engine.stopRenderLoop();
+                        //gamePlay = false;
+                        //canvas.requestPointerLock();
+                        //toggleFog().engine.render();
+                        quit.isVisible = false;
+                        if (fogEnabled == false) {
+                            var fogToggle = toggleFog();
+                            engine.runRenderLoop(function()
+                            {
+                                fogToggle.render();
+                            });
+                        }
+                        else {
+                            fogOff();
+                        }
+                        
+                });
+
+                //Fog
+                // set option to change fog density in-game
+                var fogEnabled = false;
+                gameScene.fogMode = BABYLON.Scene.FOGMODE_EXP;
+                gameScene.fogColor = new BABYLON.Color3(0.9, 0.9, 0.85);
+                gameScene.fogDensity = 0;
+
+                var toggleFog = function() {
+                    console.log("fog toggling");
+                    console.log("fog on");
+                    fogEnabled = true;
+                    gameScene.fogDensity = 0.007;
+                    
+                    return gameScene;
+                }
+
+                function fogOff() {
+                    fogEnabled = false;
+                    gameScene.fogDensity = 0.000007;
+                }
+
+                gameUI.addControl(settings);
+
                 
                 //Controls...Mouse
                 //We start without being locked.
@@ -211,19 +295,7 @@
                     }
                 });*/
                     
-                //Jump
-                function jump(){
-                    camera.cameraDirection.y = 1.0;
-                }
-
-                document.body.onkeyup = function(e){
-                if(e.keyCode == 32){
-                    //your code
-                    console.log("jump");
-                    setTimeout(jump(), 100000); 
-
-                    }
-                }
+        
 
                 // Attach events to the document
                 document.addEventListener("pointerlockchange", pointerlockchange, false);
@@ -231,7 +303,7 @@
                 document.addEventListener("mozpointerlockchange", pointerlockchange, false);
                 document.addEventListener("webkitpointerlockchange", pointerlockchange, false);
 
-                /*BABYLON.SceneOptimizer.OptimizeAsync(gameScene, BABYLON.SceneOptimizerOptions.ModerateDegradationAllowed(),
+                /*BABYLON.SceneOptimizer.OptimizeAsync(gameScene, BABYLON.SceneOptimizerOptions.HighDegradationAllowed(),
                 function() {
                 // On success
                     console.log("hello");
@@ -239,6 +311,7 @@
                 // FPS target not reached
                     console.log("too slow");
                 });*/
+               
 
                 // import village
                 var env = BABYLON.SceneLoader.ImportMesh("","./4522_open3dmodel/Medieval/", "scene.glb", gameScene, function(object) {
@@ -302,12 +375,6 @@
                 sphere1.physicsImpostor = new BABYLON.PhysicsImpostor(sphere1, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 13.1 }, gameScene);
 
 
-                //Fog
-                // set option to change fog density in-game
-                gameScene.fogMode = BABYLON.Scene.FOGMODE_EXP;
-                gameScene.fogDensity = 0.000007;
-                gameScene.fogColor = new BABYLON.Color3(0.9, 0.9, 0.85);
-            
                 //Geometry
                 var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {}, gameScene);
                 //sphere.setPhysicsState({impostor: BABYLON.PhysicsEngine.BoxImpostor, mass:1, friction:0.5, restitution:0.7});
@@ -536,14 +603,16 @@
                 
                 gameScene.beginAnimation(box1, 0, 100, true);
 
-                baseGround.checkCollisions = true;
+                //gameScene.freezeMaterials();
+
+                //baseGround.checkCollisions = true;
                 //box1.checkCollisions = true;
-                sphere1.checkCollisions = true;
-                testsphere.checkCollisions = true;
+                //sphere1.checkCollisions = true;
+                //testsphere.checkCollisions = true;
                 //env.checkCollisions = true;
                 //ground.checkCollisions = true;
                 
-                
+                //BABYLON.SceneOptimizer.OptimizeAsync(gameScene);
                 return gameScene;
 
             };
