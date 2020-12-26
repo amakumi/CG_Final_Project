@@ -176,14 +176,14 @@ var createScene = function() {
     fog.onPointerUpObservable.add(function() {
         if (fogEnabled == false) {
             var fogToggle = toggleFog();
-            settings.textBlock.text = "Fog On";
+            fog.textBlock.text = "Fog On";
             engine.runRenderLoop(function()
             {
                 fogToggle.render();
             });
         }
         else {
-            settings.textBlock.text = "Fog Off";
+            fog.textBlock.text = "Fog Off";
             fogOff();
         }
             
