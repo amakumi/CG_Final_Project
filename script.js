@@ -39,7 +39,7 @@ var createScene = function() {
         // Attach the camera to the canvas
         camera.checkCollisions = true;
         camera.applyGravity = true;
-        camera.ellipsoid = new BABYLON.Vector3(1,1,1);
+        camera.ellipsoid = new BABYLON.Vector3(1,1.25,1);
         camera.attachControl(canvas, true); 
         //gameScene.activeCameras.push(camera);
 
@@ -114,6 +114,8 @@ var createScene = function() {
             settingsOpened = true;
             gameUI.addControl(quit);
             gameUI.addControl(fog);
+            gameUI.addControl(music);
+            music.isVisible = true;
             fog.isVisible = true;
             quit.isVisible = true;
         }
@@ -121,6 +123,7 @@ var createScene = function() {
             settings.textBlock.text = "Settings";
             settingsOpened = false;
             fog.isVisible = false;
+            music.isVisible = false;
             quit.isVisible = false;
         }
     });
@@ -130,7 +133,7 @@ var createScene = function() {
         quit.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
         quit.width = 0.08;
         quit.height = 0.03;
-        quit.top = "10%";
+        quit.top = "15%";
         quit.color = "white";
         quit.fontSize = 16;
         quit.fontFamily = "Verdana";
@@ -168,7 +171,7 @@ var createScene = function() {
         fog.fontFamily = "Verdana";
         fog.background = "transparent";
         fog.cornerRadius = 15;
-
+//
         fog.onPointerEnterObservable.add(function () {
         fog.background = "brown";
     });
@@ -213,6 +216,57 @@ var createScene = function() {
         fogEnabled = false;
         gameScene.fogDensity = 0;
     }
+
+    /*var music = BABYLON.GUI.Button.CreateSimpleButton("Music Button", "Music Off");
+        music.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        music.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+        music.width = 0.08;
+        music.height = 0.03;
+        music.top = "10%";
+        music.color = "white";
+        music.fontSize = 16;
+        music.fontFamily = "Verdana";
+        music.background = "transparent";
+        music.cornerRadius = 15;
+
+    music.onPointerEnterObservable.add(function () {
+        music.background = "brown";
+    });
+
+    music.onPointerOutObservable.add(function () {
+        music.background = "transparent";
+    });
+
+    music.onPointerUpObservable.add(function() {
+        if (musicEnabled == false) {
+            music.textBlock.text = "Music On";
+            toggleBgm();
+        }
+        else {
+            music.textBlock.text = "Music Off";
+            musicOff();
+        }
+            
+    });
+
+    //bgm
+    // set option to change fog density in-game
+    var musicEnabled = false;
+    var bgm = new BABYLON.Sound("bgm", ".mp3", gameScene, null, { loop: true, autoplay: false });
+
+    var toggleBgm = function() {
+        console.log("bgm toggling");
+        console.log("bgm on");
+        musicEnabled = true;
+        bgm.play();
+        
+        return gameScene;
+    }
+
+    function musicOff() {
+        musicEnabled = false;
+        bgm.stop();
+    }*/
 
     gameUI.addControl(settings);
 
@@ -293,7 +347,7 @@ var createScene = function() {
     var env = BABYLON.SceneLoader.ImportMesh("","./4522_open3dmodel/Medieval/", "scene.glb", gameScene, function(object) {
         //var env = BABYLON.SceneLoader.ImportMesh("", "./building/", "building.babylon", gameScene, function(scene) {    
             object.forEach((mesh,index) => {
-                mesh.collisionsEnabled = true;
+                //mesh.collisionsEnabled = true;
                 //mesh.setPhysicsState(BABYLON.PhysicsEngine.MeshImpostor, {mass:0, restitution:0.7});
                 mesh.receiveShadows = true;
                 //mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0, restitution:0.7});
