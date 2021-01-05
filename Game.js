@@ -332,8 +332,8 @@ export function createScene(engine,canvas,createMenu) {
             mesh.manualUpdateOfWorldMatrixInstancedBuffer = true;
             mesh.checkOnlyOnce = true;
         });
+        engine.hideLoadingUI();
     });
-    engine.hideLoadingUI();
         
     var testsphere = BABYLON.MeshBuilder.CreateSphere("testball", {diameter: 10}, gameScene);
     testsphere.position.y = 200;
