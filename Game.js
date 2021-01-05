@@ -442,6 +442,21 @@ export function createScene(engine,canvas,createMenu) {
     // Start the particle system
     particleSystem.start();
 
+    //box 
+    // var musicbox = BABYLON.MeshBuilder.CreateBox("music-box", {diameter: 20}, gameScene);
+    // musicbox.position = new BABYLON.Vector3(-56, 34, -15);
+    // musicbox.checkCollisions = true;
+
+    // var boxsound = new BABYLON.Sound("box-sound", "/sound/menumusic.mp3", gameScene, null, { loop: true, autoplay: true, volume : 0.5});
+    // boxsound.attachToMesh(musicbox);
+
+    // camera.onCollide = function(collidedMesh) {
+    //     if(collidedMesh.uniqueId === musicbox.uniqueId) {
+    //         //set the new camera position
+    //         boxsound.stop();
+    //         console.log('bur')
+    //     }
+    // }
 
     //Animation
     const FPS = 60;
