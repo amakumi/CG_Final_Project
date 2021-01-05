@@ -320,7 +320,7 @@ export function createScene(engine,canvas,createMenu) {
     document.addEventListener("webkitpointerlockchange", pointerlockchange, false);
 
     // import village
-    var env = BABYLON.SceneLoader.ImportMesh("","./4522_open3dmodel/Medieval/", "scene.glb", gameScene, function(object) { 
+    var env = BABYLON.SceneLoader.ImportMesh("","./assets/", "scene.glb", gameScene, function(object) { 
         object.forEach((mesh,index) => {
 
             mesh.receiveShadows = true;
