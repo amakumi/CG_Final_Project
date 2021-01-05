@@ -12,7 +12,7 @@ export function createScene(engine,canvas,createMenu) {
     gameScene.gravity = new BABYLON.Vector3(0, -.55, 0);
     gameScene.getPhysicsEngine().setGravity(gameScene.gravity); 
    
-    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(-80, 33, 0), gameScene);
+    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(-80, 33.5, 0), gameScene);
  
     camera.speed = 0.2;
     //camera.parent = env;
