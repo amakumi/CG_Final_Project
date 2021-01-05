@@ -12,23 +12,7 @@ export function createScene(engine,canvas,createMenu) {
     gameScene.gravity = new BABYLON.Vector3(0, -.55, 0);
     gameScene.getPhysicsEngine().setGravity(gameScene.gravity); 
    
-<<<<<<< HEAD
-    //gameScene.enablePhysics(gameScene.gravity, new BABYLON.CannonJSPlugin());
-    
-    //Camera
-    //var camera = new BABYLON.ArcRotateCamera("Camera", -Math.PI / 2, Math.PI / 2, 12, BABYLON.Vector3.Zero(), scene);
-    //camera.attachControl(canvas, true);
-
-    // Parameters : name, position, scene
-
-    // Targets the camera to a particular position. In this case the scene origin
-    //camera.setTarget(new BABYLON.Vector3.Zero());
-
-    //var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(50, 41.5, 0), gameScene);
-    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(-80, 33.5, 0), gameScene);
-=======
     var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(-80, 33, 0), gameScene);
->>>>>>> e80db0e4bab86d7ef09e7c65bbdded0725dfcd01
  
     camera.speed = 0.2;
     //camera.parent = env;
@@ -336,69 +320,8 @@ export function createScene(engine,canvas,createMenu) {
     document.addEventListener("webkitpointerlockchange", pointerlockchange, false);
 
     // import village
-<<<<<<< HEAD
-    var env = BABYLON.SceneLoader.ImportMesh("","./assets/", "scene.glb", gameScene, function(object) {
-        //var env = BABYLON.SceneLoader.ImportMesh("", "./building/", "building.babylon", gameScene, function(scene) {    
-            object.forEach((mesh,index) => {
-                //mesh.collisionsEnabled = true;
-                //mesh.setPhysicsState(BABYLON.PhysicsEngine.MeshImpostor, {mass:0, restitution:0.7});
-                mesh.receiveShadows = true;
-                //mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0, restitution:0.7});
-                mesh.checkCollisions = true;
-                //mesh.freezeWorldMatrix();
-                mesh.doNotSyncBoundingInfo = true;
-                mesh.convertToUnIndexedMesh = true;
-                mesh.manualUpdateOfWorldMatrixInstancedBuffer = true;
-                mesh.checkOnlyOnce = true;
-                //mesh.worldMatrixInstancedBuffer.set(env, 16); 
-                //BABYLON.Mesh.MergeMeshes([mesh, mesh]);
-                //BABYLON.Mesh.MergeMeshes(env, true, true, false, false, false);
-            });
-            engine.hideLoadingUI();
-            // mat is the matrix you want to store at the given offset
-            //offset += 16; // (a matrix is composed of 16 floats
-            
-            //BABYLON.Mesh.MergeMeshes(env);
-            //let env = BABYLON.Mesh.MergeMeshes(object, true, true, null, false, true);
-            //env.collisionsEnabled = true;
-            //env.checkCollisions = true;
-            //env.physicsImpostor = new BABYLON.PhysicsImpostor(env, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0, restitution:0.7});
-            
-            /*for (var i = 1; i < gameScene.env.length; i++) {
-            if (gameScene.env[i].checkCollisions && gameScene.env[i].isVisible === false) {
-                gameScene.env[i].setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, 
-                                                friction: 0.5, restitution: 0.7 });
-                meshesColliderList.push(gameScene.env[i]);
-            }
-        ]*/
-        
-    });
-
-    //env = BABYLON.Mesh.MergeMeshes(env, true, true, true, false, false);
-
-    gameScene.registerBeforeRender(e => { 
-        gameScene.blockfreeActiveMeshesAndRenderingGroups = true;
-        env.freezeWorldMatrix = true;
-        env.checkOnlyOnce = true;
-        //gameScene.freezeActiveMeshes(true);
-        env.isPickable = false;
-        //env.occlusionType = BABYLON.AbstractMesh.OCCLUSION_TYPE_OPTIMISTIC;
-        env.isOccluded = true;
-        env.occlusionRetryCount = 10;
-        env.occlusionType = BABYLON.AbstractMesh.OCCLUSION_TYPE_STRICT;
-        //env.physicsImpostor = new BABYLON.PhysicsImpostor(env, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0, restitution:0.7});
-        var options = new BABYLON.SceneOptimizerOptions();
-        options.addOptimization(new BABYLON.HardwareScalingOptimization(0, 100));
-        // Optimizer
-        var optimizer = new BABYLON.SceneOptimizer(gameScene, options);
-        optimizer = true;
-        
-        //env = BABYLON.Mesh.MergeMeshes(env, true, true, null, false, true);
-    });
-=======
     var env = BABYLON.SceneLoader.ImportMesh("","./4522_open3dmodel/Medieval/", "scene.glb", gameScene, function(object) { 
         object.forEach((mesh,index) => {
->>>>>>> e80db0e4bab86d7ef09e7c65bbdded0725dfcd01
 
             mesh.receiveShadows = true;
 
