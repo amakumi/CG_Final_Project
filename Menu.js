@@ -13,6 +13,9 @@ export function Menu (engine,canvas,createScene) {
         title.top = "-25%";
         title.fontFamily = "Times New Roman";
 
+        var menubgm = new BABYLON.Sound("bgm", "./sound/menumusic.mp3", menuScene, null, { loop: true, autoplay: true });
+        menubgm.play();
+
         var play = BABYLON.GUI.Button.CreateSimpleButton("Play Button", "Play");
         play.width = 0.2;
         play.height = 0.1;
@@ -39,6 +42,7 @@ export function Menu (engine,canvas,createScene) {
             engine.runRenderLoop(function()
             {
                 game.render();
+                menubgm.stop();
             })
         });
         menuUI.addControl(title);

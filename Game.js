@@ -24,7 +24,7 @@ export function createScene(engine,canvas,createMenu) {
     //camera.setTarget(new BABYLON.Vector3.Zero());
 
     //var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(50, 41.5, 0), gameScene);
-    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(-80, 33, 0), gameScene);
+    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(-80, 33.5, 0), gameScene);
  
     camera.speed = 0.2;
     //camera.parent = env;
@@ -244,22 +244,22 @@ export function createScene(engine,canvas,createMenu) {
     });
 
     //bgm
-    // set option to change fog density in-game
+    // set option to change music in-game
     var musicEnabled = false;
-    // var bgm = new BABYLON.Sound("bgm", ".mp3", gameScene, null, { loop: true, autoplay: false });
+    var bgm = new BABYLON.Sound("bgm", "/sound/ambiance.mp3", gameScene, null, { loop: true, autoplay: false });
 
     var toggleBgm = function() {
         console.log("bgm toggling");
         console.log("bgm on");
         musicEnabled = true;
-        // bgm.play();
+        bgm.play();
         
         return gameScene;
     }
 
     function musicOff() {
         musicEnabled = false;
-        // bgm.stop();
+        bgm.stop();
     }
 
     gameUI.addControl(settings);
@@ -338,7 +338,7 @@ export function createScene(engine,canvas,createMenu) {
     document.addEventListener("webkitpointerlockchange", pointerlockchange, false);
 
     // import village
-    var env = BABYLON.SceneLoader.ImportMesh("","./4522_open3dmodel/Medieval/", "scene.glb", gameScene, function(object) {
+    var env = BABYLON.SceneLoader.ImportMesh("","./assets/", "scene.glb", gameScene, function(object) {
         //var env = BABYLON.SceneLoader.ImportMesh("", "./building/", "building.babylon", gameScene, function(scene) {    
             object.forEach((mesh,index) => {
                 //mesh.collisionsEnabled = true;
