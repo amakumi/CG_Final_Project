@@ -1,4 +1,4 @@
-export function createScene(engine,canvas) {
+export function createScene(engine,canvas,createMenu) {
     var gameScene = new BABYLON.Scene(engine);
     var gamePlay = true;
 
@@ -24,7 +24,7 @@ export function createScene(engine,canvas) {
     //camera.setTarget(new BABYLON.Vector3.Zero());
 
     //var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(50, 41.5, 0), gameScene);
-    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(-91, 32.5, 0), gameScene);
+    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(-80, 33, 0), gameScene);
  
     camera.speed = 0.2;
     //camera.parent = env;
@@ -147,7 +147,7 @@ export function createScene(engine,canvas) {
             gamePlay = false;
             //canvas.requestPointerLock();
 
-            var menu = createMenu();
+            var menu = createMenu(engine,canvas,createScene);
             engine.runRenderLoop(function()
             {
                 menu.render();
@@ -211,7 +211,7 @@ export function createScene(engine,canvas) {
         gameScene.fogDensity = 0;
     }
 
-    /*var music = BABYLON.GUI.Button.CreateSimpleButton("Music Button", "Music Off");
+    var music = BABYLON.GUI.Button.CreateSimpleButton("Music Button", "Music Off");
         music.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
         music.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
         music.width = 0.08;
@@ -246,21 +246,21 @@ export function createScene(engine,canvas) {
     //bgm
     // set option to change fog density in-game
     var musicEnabled = false;
-    var bgm = new BABYLON.Sound("bgm", ".mp3", gameScene, null, { loop: true, autoplay: false });
+    // var bgm = new BABYLON.Sound("bgm", ".mp3", gameScene, null, { loop: true, autoplay: false });
 
     var toggleBgm = function() {
         console.log("bgm toggling");
         console.log("bgm on");
         musicEnabled = true;
-        bgm.play();
+        // bgm.play();
         
         return gameScene;
     }
 
     function musicOff() {
         musicEnabled = false;
-        bgm.stop();
-    }*/
+        // bgm.stop();
+    }
 
     gameUI.addControl(settings);
 

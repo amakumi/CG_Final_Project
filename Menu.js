@@ -35,7 +35,7 @@ export function Menu (engine,canvas,createScene) {
             gamePlay = true;
             canvas.requestPointerLock();
 
-            var game = createScene(engine,canvas);
+            var game = createScene(engine,canvas,Menu);
             engine.runRenderLoop(function()
             {
                 game.render();
