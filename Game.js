@@ -166,10 +166,7 @@ export function createScene(engine,canvas,createMenu) {
         if (fogEnabled == false) {
             var fogToggle = toggleFog();
             fog.textBlock.text = "Fog On";
-            engine.runRenderLoop(function()
-            {
-                fogToggle.render();
-            });
+            fogToggle.render();
         }
         else {
             fog.textBlock.text = "Fog Off";
