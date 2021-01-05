@@ -330,6 +330,7 @@ export function createScene(engine,canvas,createMenu) {
             mesh.checkOnlyOnce = true;
         });
         engine.hideLoadingUI();
+        boxsound.play();
     });
         
     var testsphere = BABYLON.MeshBuilder.CreateSphere("testball", {diameter: 10}, gameScene);
@@ -444,14 +445,31 @@ export function createScene(engine,canvas,createMenu) {
     // musicbox.position = new BABYLON.Vector3(-56, 34, -15);
     // musicbox.checkCollisions = true;
 
-    // var boxsound = new BABYLON.Sound("box-sound", "/sound/menumusic.mp3", gameScene, null, { loop: true, autoplay: true, volume : 0.5});
+    // var musicbox2 = BABYLON.MeshBuilder.CreateBox("music-box2", {diameter: 20}, gameScene);
+    // musicbox2.position = new BABYLON.Vector3(-56, 34, -10);
+    // musicbox2.checkCollisions = true;
+
+    // var boxsound = new BABYLON.Sound("box-sound", "/sound/ticking.mp3", gameScene, null, { loop: true, autoplay: false, volume : 0.5});
     // boxsound.attachToMesh(musicbox);
+
+    // var checkboxsound2 = false;
+    // var boxsound2 = new BABYLON.Sound("box-sound2", "/sound/ticking.mp3", gameScene, null, { loop: true, autoplay: false, volume : 0.5});
+    // boxsound2.attachToMesh(musicbox2);
 
     // camera.onCollide = function(collidedMesh) {
     //     if(collidedMesh.uniqueId === musicbox.uniqueId) {
     //         //set the new camera position
     //         boxsound.stop();
     //         console.log('bur')
+    //         if (!checkboxsound2){
+    //             checkboxsound2 = true;
+    //             boxsound2.play();
+    //         }
+    //     }
+    //     if(collidedMesh.uniqueId === musicbox2.uniqueId) {
+    //         //set the new camera position
+    //         boxsound2.stop();
+    //         console.log('burs')
     //     }
     // }
 
