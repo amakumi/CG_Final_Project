@@ -3,7 +3,7 @@
 ## Application Manual
 
 Created by:
- Marco Melvern and Michael Berlian 
+ [Marco Melvern](https://www.github.com/amakumi) and [Michael Berlian](https://www.github.com/michaelberlian)
 
 ## DOWNLOADING THE GAME
 - To download this game, go to https://github.com/amakumi/CG_Final_Project to download the assets and the engine needed to run the game.
