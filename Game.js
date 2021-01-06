@@ -478,24 +478,26 @@ export function createScene(engine,canvas,createMenu) {
     musicbox5.material = glowEffect;
 
     //box sound
-    var boxsound = new BABYLON.Sound("box-sound", "/sound/ticking.mp3", gameScene, null, { loop: true, autoplay: false, volume : 0.5});
+    var boxsound = new BABYLON.Sound("box-sound", "/sound/ticking.mp3", gameScene, null, { loop: true, autoplay: false, volume : 0.2});
     boxsound.attachToMesh(musicbox);
 
     var checkboxsound2 = false;
-    var boxsound2 = new BABYLON.Sound("box-sound2", "/sound/ticking.mp3", gameScene, null, { loop: true, autoplay: false, volume : 0.5});
+    var boxsound2 = new BABYLON.Sound("box-sound2", "/sound/ticking.mp3", gameScene, null, { loop: true, autoplay: false, volume : 0.2});
     boxsound2.attachToMesh(musicbox2);
 
     var checkboxsound3 = false;
-    var boxsound3 = new BABYLON.Sound("box-sound3", "/sound/ticking.mp3", gameScene, null, { loop: true, autoplay: false, volume : 0.5});
+    var boxsound3 = new BABYLON.Sound("box-sound3", "/sound/ticking.mp3", gameScene, null, { loop: true, autoplay: false, volume : 0.2});
     boxsound3.attachToMesh(musicbox3);
 
     var checkboxsound4 = false;
-    var boxsound4 = new BABYLON.Sound("box-sound4", "/sound/ticking.mp3", gameScene, null, { loop: true, autoplay: false, volume : 0.5});
+    var boxsound4 = new BABYLON.Sound("box-sound4", "/sound/ticking.mp3", gameScene, null, { loop: true, autoplay: false, volume : 0.2});
     boxsound4.attachToMesh(musicbox4);
 
     var checkboxsound5 = false;
-    var boxsound5 = new BABYLON.Sound("box-sound5", "/sound/ticking.mp3", gameScene, null, { loop: true, autoplay: false, volume : 0.5});
+    var boxsound5 = new BABYLON.Sound("box-sound5", "/sound/ticking.mp3", gameScene, null, { loop: true, autoplay: false, volume : 0.2});
     boxsound5.attachToMesh(musicbox5);
+
+    var captureSound = new BABYLON.Sound("boxcapt", "/sound/captured.mp3", gameScene, null, { loop: false, autoplay: false, volume : 0.5});
 
     camera.onCollide = function(collidedMesh) {
         if(collidedMesh.uniqueId === musicbox.uniqueId) {
@@ -506,6 +508,7 @@ export function createScene(engine,canvas,createMenu) {
                 checkboxsound2 = true;
                 musicbox2.isVisible = true;
                 boxsound2.play();
+                captureSound.play();
                
             }
         }
@@ -517,7 +520,7 @@ export function createScene(engine,canvas,createMenu) {
                 checkboxsound3 = true;
                 musicbox3.isVisible = true;
                 boxsound3.play();
-               
+                captureSound.play();
             }
         }
         if(collidedMesh.uniqueId === musicbox3.uniqueId) {
@@ -528,7 +531,7 @@ export function createScene(engine,canvas,createMenu) {
                 checkboxsound4 = true;
                 musicbox4.isVisible = true;
                 boxsound4.play();
-               
+                captureSound.play();
             }
         }
         if(collidedMesh.uniqueId === musicbox4.uniqueId) {
@@ -539,13 +542,14 @@ export function createScene(engine,canvas,createMenu) {
                 checkboxsound5 = true;
                 musicbox5.isVisible = true;
                 boxsound5.play();
-               
+                captureSound.play();
             }
         }
         if(collidedMesh.uniqueId === musicbox5.uniqueId) {
             //set the new camera position
             musicbox5.isVisible = false;
             boxsound5.stop();
+            captureSound.play();
         }
     }
 
