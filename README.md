@@ -38,3 +38,6 @@ Created by:
 ## Project Report
 The full report can be accessed through [this link](https://docs.google.com/document/d/1HMRYh_KPVZTy2SB1-1c3OIbifS6GCUoFcWx1JLYix18/edit?usp=sharing)
 
+## Project Demo Video
+[CLICK HERE](https://drive.google.com/file/d/1xhwAvlqErUhWroH8n90PGuEBuu-GC1R6/view?usp=sharing)
+
