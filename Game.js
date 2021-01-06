@@ -112,7 +112,7 @@ export function createScene(engine,canvas,createMenu) {
             music.isVisible = false;
             quit.isVisible = false;
             tick.isVisible = false;
-            boxColor = false
+            boxColor.isVisible = false
         }
     });
 
