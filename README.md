@@ -33,3 +33,8 @@ Created by:
 - Click on the Music button to toggle the background music on or off
 - Click the Quit button to exit the gameplay and go back to the menu
 
+---
+
+## Project Report
+The full report can be accessed through [this link](https://docs.google.com/document/d/1HMRYh_KPVZTy2SB1-1c3OIbifS6GCUoFcWx1JLYix18/edit?usp=sharing)
+
