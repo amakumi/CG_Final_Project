@@ -97,9 +97,11 @@ export function createScene(engine,canvas,createMenu) {
             gameUI.addControl(quit);
             gameUI.addControl(fog);
             gameUI.addControl(music);
+            gameUI.addControl(tick);
             music.isVisible = true;
             fog.isVisible = true;
             quit.isVisible = true;
+            tick.isVisible = true;
         }
         else {
             settings.textBlock.text = "Settings";
@@ -107,6 +109,7 @@ export function createScene(engine,canvas,createMenu) {
             fog.isVisible = false;
             music.isVisible = false;
             quit.isVisible = false;
+            tick.isVisible = false;
         }
     });
 
@@ -115,7 +118,7 @@ export function createScene(engine,canvas,createMenu) {
         quit.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
         quit.width = 0.08;
         quit.height = 0.03;
-        quit.top = "15%";
+        quit.top = "20%";
         quit.color = "white";
         quit.fontSize = 16;
         quit.fontFamily = "Verdana";
@@ -230,8 +233,7 @@ export function createScene(engine,canvas,createMenu) {
         else {
             music.textBlock.text = "Music Off";
             musicOff();
-        }
-            
+        }        
     });
 
     //bgm
@@ -252,6 +254,74 @@ export function createScene(engine,canvas,createMenu) {
         musicEnabled = false;
         bgm.stop();
     }
+
+    var tick = BABYLON.GUI.Button.CreateSimpleButton("tick Button", "Tick On");
+    tick.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+    tick.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+    tick.width = 0.08;
+    tick.height = 0.03;
+    tick.top = "15%";
+    tick.color = "white";
+    tick.fontSize = 16;
+    tick.fontFamily = "Verdana";
+    tick.background = "transparent";
+    tick.cornerRadius = 15;
+
+    tick.onPointerEnterObservable.add(function () {
+        tick.background = "brown";
+    });
+
+    tick.onPointerOutObservable.add(function () {
+        tick.background = "transparent";
+    });
+
+    tick.onPointerUpObservable.add(function() {
+        if (tickEnabled == false) {
+            tick.textBlock.text = "Tick On";
+            toggleTick();
+        }
+        else {
+            tick.textBlock.text = "Tick Off";
+            tickOff();
+        }        
+    });
+
+    var tickEnabled = true;
+
+    var toggleTick = function() {
+        console.log("tick toggling");
+        console.log("tick on");
+        tickEnabled = true;
+        if (!finished){
+            if(checkboxsound5){
+                boxsound5.play();
+            } 
+            else if (checkboxsound4){
+                boxsound4.play();
+            }
+            else if (checkboxsound3){
+                boxsound3.play();
+            }
+            else if (checkboxsound2){
+                boxsound2.play();
+            }
+            else {
+                boxsound.play();
+            }
+        }
+        
+        return gameScene;
+    }
+
+    function tickOff() {
+        tickEnabled = false;
+        boxsound.stop();
+        boxsound2.stop();
+        boxsound3.stop();
+        boxsound4.stop();
+        boxsound5.stop();
+    }
+
 
     gameUI.addControl(settings);
 
@@ -478,7 +548,9 @@ export function createScene(engine,canvas,createMenu) {
     musicbox5.material = glowEffect;
 
     //box sound
-    var boxsound = new BABYLON.Sound("box-sound", "/sound/ticking.mp3", gameScene, null, { loop: true, autoplay: false, volume : 0.2});
+    var finished = false;
+
+    var boxsound = new BABYLON.Sound("box-sound", "/sound/ticking.mp3", gameScene, null, { loop: true, autoplay: false, volume : 0.5});
     boxsound.attachToMesh(musicbox);
 
     var checkboxsound2 = false;
@@ -547,6 +619,7 @@ export function createScene(engine,canvas,createMenu) {
         }
         if(collidedMesh.uniqueId === musicbox5.uniqueId) {
             //set the new camera position
+            finished = true;
             musicbox5.isVisible = false;
             boxsound5.stop();
             captureSound.play();
