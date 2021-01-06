@@ -98,10 +98,12 @@ export function createScene(engine,canvas,createMenu) {
             gameUI.addControl(fog);
             gameUI.addControl(music);
             gameUI.addControl(tick);
+            gameUI.addControl(boxColor);
             music.isVisible = true;
             fog.isVisible = true;
             quit.isVisible = true;
             tick.isVisible = true;
+            boxColor.isVisible = true;
         }
         else {
             settings.textBlock.text = "Settings";
@@ -110,6 +112,7 @@ export function createScene(engine,canvas,createMenu) {
             music.isVisible = false;
             quit.isVisible = false;
             tick.isVisible = false;
+            boxColor = false
         }
     });
 
@@ -118,7 +121,7 @@ export function createScene(engine,canvas,createMenu) {
         quit.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
         quit.width = 0.08;
         quit.height = 0.03;
-        quit.top = "20%";
+        quit.top = "25%";
         quit.color = "white";
         quit.fontSize = 16;
         quit.fontFamily = "Verdana";
@@ -255,6 +258,7 @@ export function createScene(engine,canvas,createMenu) {
         bgm.stop();
     }
 
+    // box's tick sound setting 
     var tick = BABYLON.GUI.Button.CreateSimpleButton("tick Button", "Tick On");
     tick.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
     tick.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
@@ -309,7 +313,6 @@ export function createScene(engine,canvas,createMenu) {
                 boxsound.play();
             }
         }
-        
         return gameScene;
     }
 
@@ -320,9 +323,64 @@ export function createScene(engine,canvas,createMenu) {
         boxsound3.stop();
         boxsound4.stop();
         boxsound5.stop();
+        
     }
 
+    // box's color setting 
+    var boxColor = BABYLON.GUI.Button.CreateSimpleButton("boxColor Button", "Red");
+    boxColor.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+    boxColor.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+    boxColor.width = 0.08;
+    boxColor.height = 0.03;
+    boxColor.top = "20%";
+    boxColor.color = "white";
+    boxColor.fontSize = 16;
+    boxColor.fontFamily = "Verdana";
+    boxColor.background = "transparent";
+    boxColor.cornerRadius = 15;
 
+    boxColor.onPointerEnterObservable.add(function () {
+        boxColor.background = "brown";
+    });
+
+    boxColor.onPointerOutObservable.add(function () {
+        boxColor.background = "transparent";
+    });
+
+    boxColor.onPointerUpObservable.add(function() {
+        if (boxsColor == "red") {
+            boxColor.textBlock.text = "Blue";
+            Blue();
+        }
+        else if (boxsColor == "blue") {
+            boxColor.textBlock.text = "Green";
+            Green();
+        }     
+        else if (boxsColor == "green") {
+            boxColor.textBlock.text = "Red";
+            Red();
+        }     
+    });
+
+    var boxsColor = "red";
+
+    var Red = function() {
+        boxsColor = "red"
+        MusicBoxMaterial.diffuseTexture = new BABYLON.Texture("assets/red.jpg");
+        return gameScene;
+    }
+    var Blue = function() {
+        boxsColor = "blue"
+        MusicBoxMaterial.diffuseTexture = new BABYLON.Texture("assets/blue.png");
+        return gameScene;
+    }
+    var Green = function() {
+        boxsColor = "green"
+        MusicBoxMaterial.diffuseTexture = new BABYLON.Texture("assets/green.png");
+        return gameScene;
+    }
+
+    
     gameUI.addControl(settings);
 
 
@@ -541,11 +599,15 @@ export function createScene(engine,canvas,createMenu) {
     musicbox5.checkCollisions = true;
     musicbox5.isVisible = false;
 
-    musicbox.material = glowEffect;
-    musicbox2.material = glowEffect;
-    musicbox3.material = glowEffect;
-    musicbox4.material = glowEffect;
-    musicbox5.material = glowEffect;
+    
+    var MusicBoxMaterial = new BABYLON.StandardMaterial("MusicBoxMaterial", gameScene);
+    MusicBoxMaterial.diffuseTexture = new BABYLON.Texture("./assets/red.jpg");
+
+    musicbox.material = MusicBoxMaterial;
+    musicbox2.material = MusicBoxMaterial;
+    musicbox3.material = MusicBoxMaterial;
+    musicbox4.material = MusicBoxMaterial;
+    musicbox5.material = MusicBoxMaterial;
 
     //box sound
     var finished = false;
