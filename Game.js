@@ -416,33 +416,6 @@ export function createScene(engine,canvas,createMenu) {
         }
     };
 
-    // Pause Text
-    var pause_text = new BABYLON.GUI.TextBlock('Pause');
-    pause_text.fontSize = 100;
-    pause_text.color = "white";
-    pause_text.text = "Paused";
-    gameUI.addControl(pause_text);
-    pause_text.isVisible = false;
-
-    // Pause Function
-    /*window.addEventListener("keydown", function (evt) {
-        // space key down
-        if (evt.keyCode === 80 && gamePlay) {
-            if(!pause) {
-                pause_text.isVisible = true;
-                pause = true;
-                //engine.stopRenderLoop();
-            }
-            else {
-                pause_text.isVisible = false;
-                pause = false;
-                gameScene.animationsEnabled = false;
-                engine.runRenderLoop(function(){
-                    gameScene.render();
-                });
-            }
-        }
-    });*/
 
     // Attach events to the document
     document.addEventListener("pointerlockchange", pointerlockchange, false);
