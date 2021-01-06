@@ -1,5 +1,4 @@
 
-// Entar kita taro semua javascript di file ini klo bisa yaa
 //put stuff here first
 
 import { Menu } from './Menu.js';

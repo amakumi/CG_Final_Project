@@ -408,25 +408,6 @@ export function createScene(engine,canvas,createMenu) {
         engine.hideLoadingUI();
         boxsound.play();
     });
-        
-    var testsphere = BABYLON.MeshBuilder.CreateSphere("testball", {diameter: 10}, gameScene);
-    testsphere.position.y = 200;
-    testsphere.physicsImpostor = new BABYLON.PhysicsImpostor(testsphere, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 12.1 }, gameScene);
-
-
-    var testbox = BABYLON.MeshBuilder.CreateBox("testbox", {diameter: 20}, gameScene);
-    testbox.position = new BABYLON.Vector3(90,300,  0);
-
-    testbox.physicsImpostor = new BABYLON.PhysicsImpostor(testbox, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 2.1 }, gameScene);
-
-    var sphere1 = BABYLON.MeshBuilder.CreateSphere("sphere1", {diameter: 20}, gameScene);
-    sphere1.position = new BABYLON.Vector3(90,200,0);
-
-    sphere1.physicsImpostor = new BABYLON.PhysicsImpostor(sphere1, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 13.1 }, gameScene);
-
-
-    //Geometry
-    var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {}, gameScene);
 
     var box1 = BABYLON.MeshBuilder.CreateBox("Box1", {height: 3, width: 3, depth: 3}, gameScene);
 
@@ -453,10 +434,10 @@ export function createScene(engine,canvas,createMenu) {
     glowEffect.specularColor = new BABYLON.Color3(0.5, 0.6, 0.87);
     glowEffect.emissiveColor = new BABYLON.Color3(1, 0, 0);
     glowEffect.ambientColor = new BABYLON.Color3(0.23, 0.98, 0.53);
-    sphere.material = glowEffect;
+    //sphere.material = glowEffect;
 
     //Position   
-    sphere.position = new BABYLON.Vector3(50,50,0);
+    //sphere.position = new BABYLON.Vector3(50,50,0);
     box1.position.y = 60.5;
     box1.rotation.y = 1;
     baseGround.position.y = 2;
@@ -476,8 +457,8 @@ export function createScene(engine,canvas,createMenu) {
     particleSystem.maxEmitBox = new BABYLON.Vector3(500, 2, 70); // To...
 
     // Colors of all particles
-    particleSystem.color1 = new BABYLON.Color4(0.7, 5.8, 1.0, 1.0);
-    particleSystem.color2 = new BABYLON.Color4(0.2, 5.5, 1.0, 1.0);
+    particleSystem.color1 = new BABYLON.Color4(5.7, 5.8, 5.0, 1.0);
+    particleSystem.color2 = new BABYLON.Color4(5.2, 5.5, 5.0, 1.0);
     particleSystem.colorDead = new BABYLON.Color4(0, 0, 0.2, 0.0);
 
     // Size of each particle (random between...
