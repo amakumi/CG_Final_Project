@@ -7,7 +7,7 @@ export function createScene(engine,canvas,createMenu) {
     gameScene.collisionsEnabled = true;
 
     // debug UI
-    gameScene.debugLayer.show();
+    //gameScene.debugLayer.show();
 
     gameScene.gravity = new BABYLON.Vector3(0, -.55, 0);
     gameScene.getPhysicsEngine().setGravity(gameScene.gravity); 
