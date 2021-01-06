@@ -1,4 +1,5 @@
-# CG_Final_Project
+# CG Final Project
+# "Hicksville"
 
 ## Application Manual
 
